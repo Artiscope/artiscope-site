@@ -78,22 +78,6 @@ input { font-family: inherit; }
   align-items: center;
   position: relative;
 }
-.cart-badge {
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  background: var(--ink);
-  color: var(--paper);
-  font-size: 10px;
-  line-height: 1;
-  border-radius: 999px;
-  min-width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 3px;
-}
 .hamburger { display: none; }
 
 /* BUTTONS */
@@ -172,41 +156,6 @@ input { font-family: inherit; }
 .search-row-meta { font-size: 13px; color: var(--muted); }
 .search-empty { margin-top: 40px; font-size: 15px; color: var(--muted); }
 
-/* CART */
-.cart-backdrop { position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,0.4); }
-.cart-drawer {
-  position: fixed;
-  top: 0; right: 0; bottom: 0;
-  width: 420px;
-  max-width: 100vw;
-  z-index: 90;
-  background: var(--paper);
-  display: flex;
-  flex-direction: column;
-  box-shadow: -20px 0 40px rgba(0,0,0,0.12);
-}
-.cart-head {
-  padding: 24px 28px;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.cart-body { flex-grow: 1; overflow-y: auto; padding: 12px 28px; }
-.cart-item { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid #F0F0F0; }
-.cart-item-thumb { width: 64px; height: 64px; border-radius: 10px; flex-shrink: 0; }
-.cart-item-body { flex-grow: 1; }
-.cart-item-title { font-size: 15px; font-weight: 500; }
-.cart-item-artist { font-size: 13px; color: var(--muted); margin-top: 2px; }
-.cart-item-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-.cart-remove { background: none; border: none; padding: 4px; color: var(--muted); }
-.cart-remove:hover { color: var(--ink); }
-.cart-empty { padding: 60px 0; text-align: center; display: flex; flex-direction: column; gap: 16px; align-items: center; }
-.cart-foot { padding: 24px 28px; border-top: 1px solid var(--line); }
-.cart-subtotal-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 15px; }
-.cart-subtotal-row span:last-child { font-size: 17px; font-weight: 500; }
-.cart-note { font-size: 12px; color: #9A9A9A; margin-top: 10px; text-align: center; }
-
 /* LAYOUT */
 .section { padding: 100px 32px; }
 .section-tinted { background: var(--tint); }
@@ -268,21 +217,11 @@ input { font-family: inherit; }
 .artist-tag { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
 /* RELEASES */
-.filter-tabs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
-.filter-tab {
-  font-size: 13px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  border: 1px solid #D9D9D9;
-  background: var(--paper);
-  transition: background 0.15s ease, color 0.15s ease;
-}
-.filter-tab.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .releases-grid {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto 40px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
+  grid-template-columns: repeat(3, minmax(0,1fr));
   gap: 24px;
 }
 .release-card { display: flex; flex-direction: column; gap: 14px; transition: transform 0.2s ease; }
@@ -292,9 +231,7 @@ input { font-family: inherit; }
 .release-artist { font-size: 13px; color: var(--muted); margin-top: 2px; }
 .release-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
 .release-price { font-size: 14px; }
-.release-edition { font-size: 12px; }
 .release-add { width: 100%; margin-top: 12px; padding: 10px 0; font-size: 13px; }
-.empty-note { text-align: center; font-size: 14px; color: var(--muted); margin: 0 auto 24px; }
 .section-tinted .btn-ghost { margin: 0 auto; }
 
 /* EDITORIAL */
@@ -406,10 +343,22 @@ input { font-family: inherit; }
   .editorial { grid-template-columns: 1fr; }
   .trust-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .panels { grid-template-columns: 1fr; }
-  .cart-drawer { width: 100%; }
 }
 
 [hidden] { display: none !important; }
 
 .logo-img { height: 26px; width: auto; display: block; }
 .footer-logo-img { height: 22px; width: auto; display: block; margin-bottom: 12px; }
+
+.section-subtext { font-size: 15px; color: var(--muted); max-width: 480px; margin-top: 4px; }
+.coming-soon-badge {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  opacity: 0.75;
+}
+.artist-card.is-disabled { cursor: default; }
+.artist-card.is-disabled .artist-image { opacity: 0.55; }
+.release-external { font-size: 13px; color: var(--muted); margin-top: 10px; display: block; }
