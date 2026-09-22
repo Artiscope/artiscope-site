@@ -27,13 +27,6 @@
       <button class="icon-btn" id="search-toggle" aria-label="Search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       </button>
-      <button class="icon-btn" aria-label="Account">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
-      </button>
-      <button class="icon-btn" id="cart-toggle" aria-label="Open bag">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
-        <span class="cart-badge" id="cart-badge" hidden>0</span>
-      </button>
       <button class="icon-btn hamburger" id="menu-toggle" aria-label="Open menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
@@ -74,26 +67,6 @@
   </div>
 </div>
 
-<!-- CART DRAWER -->
-<div class="cart-backdrop" id="cart-backdrop" hidden></div>
-<aside class="cart-drawer" id="cart-drawer" hidden aria-label="Shopping bag">
-  <div class="cart-head">
-    <h3>Your bag</h3>
-    <button class="icon-btn" id="cart-close" aria-label="Close bag">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
-    </button>
-  </div>
-  <div class="cart-body" id="cart-body"></div>
-  <div class="cart-foot" id="cart-foot" hidden>
-    <div class="cart-subtotal-row">
-      <span>Subtotal</span>
-      <span id="cart-subtotal">£0</span>
-    </div>
-    <button class="btn-primary btn-block" id="checkout-btn">Checkout</button>
-    <p class="cart-note">Prototype only, no payment is taken yet.</p>
-  </div>
-</aside>
-
 <main>
 
   <!-- HERO -->
@@ -109,7 +82,7 @@
   <section id="artists" class="section">
     <div class="section-head">
       <p class="eyebrow">The artists</p>
-      <h2>Six artists, one publisher</h2>
+      <h2>One publisher, several artists</h2>
     </div>
     <div class="artists-grid" id="artists-grid"></div>
   </section>
@@ -119,15 +92,9 @@
     <div class="section-head">
       <p class="eyebrow">Just released</p>
       <h2>New this month</h2>
-    </div>
-    <div class="filter-tabs" id="filter-tabs">
-      <button class="filter-tab is-active" data-filter="all">All</button>
-      <button class="filter-tab" data-filter="originals">Originals</button>
-      <button class="filter-tab" data-filter="editions">Editions</button>
+      <p class="section-subtext">Each piece is sold and shipped by the artist's own store, Artiscope just points the way.</p>
     </div>
     <div class="releases-grid" id="releases-grid"></div>
-    <p class="empty-note" id="releases-empty" hidden>No pieces in this category right now.</p>
-    <a href="#" class="btn-ghost">View all editions</a>
   </section>
 
   <!-- EDITORIAL -->
@@ -179,8 +146,8 @@
       </div>
       <div class="trust-item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
-        <p class="trust-title">Six artists, one publisher</p>
-        <p class="trust-copy">Every artist represented and paid directly through Artiscope.</p>
+        <p class="trust-title">One publisher, several artists</p>
+        <p class="trust-copy">Buy directly from each artist's own store, Artiscope just helps you find them.</p>
       </div>
     </div>
   </section>
@@ -204,7 +171,7 @@
   <div class="footer-grid">
     <div>
       <img src="logo-white.png" alt="Artiscope" class="footer-logo-img">
-      <p class="footer-blurb">A contemporary art publisher representing six artists worldwide.</p>
+      <p class="footer-blurb">A contemporary art publisher, connecting you to independent artists worldwide.</p>
     </div>
     <div class="footer-col">
       <p class="footer-heading">Shop</p>
