@@ -364,8 +364,8 @@ input { font-family: inherit; }
 .release-external { font-size: 13px; color: var(--muted); margin-top: 10px; display: block; }
 
 .artist-logo-badge {
-  max-width: 75%;
-  max-height: 90px;
+  max-width: 85%;
+  max-height: 140px;
   width: auto;
   height: auto;
 }
