@@ -7,8 +7,18 @@
   /* ---------- render: artists ---------- */
   const artistsGrid = document.getElementById("artists-grid");
   artistsGrid.innerHTML = ARTISTS.map((a) => {
+    let imageStyle = `background:${a.gradient}`;
+    let imageContent = a.url ? "[Signature piece]" : "";
+    if (a.coverImage) {
+      imageStyle = `background-image:url(${a.coverImage}); background-size:cover; background-position:center;`;
+      imageContent = "";
+    }
+    if (a.logoBadge) {
+      imageStyle += "; align-items:center; justify-content:center;";
+      imageContent = `<img src="${a.logoBadge}" alt="${a.name} logo" class="artist-logo-badge">`;
+    }
     const inner = `
-      <div class="artist-image" style="background:${a.gradient}">${a.url ? "[Signature piece]" : ""}</div>
+      <div class="artist-image" style="${imageStyle}">${imageContent}</div>
       <div>
         <h3 class="artist-name">${a.name}</h3>
         <p class="artist-tag">${a.tag}</p>
