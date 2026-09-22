@@ -9,7 +9,7 @@ const ARTISTS = [
     id: "frank-canvas",
     name: "Frank Canvas",
     tag: "Bold colour, layered abstraction",
-    gradient: "linear-gradient(160deg, #4A4A4A 0%, #0A0A0A 100%)",
+    gradient: "#EDEAE3",
     logoBadge: "frank-canvas-signature.png",
     url: "https://frankcanvas.com/"
   },
@@ -17,7 +17,7 @@ const ARTISTS = [
     id: "los-talgia",
     name: "Los-talgia",
     tag: "Nostalgic toy art from the 70s, 80s and 90s",
-    gradient: "linear-gradient(160deg, #D4D4D4 0%, #9A9A9A 100%)",
+    gradient: "#F5E7C4",
     logoBadge: "lostalgia-logo.png",
     url: "https://los-talgia.com/"
   },
@@ -32,7 +32,7 @@ const ARTISTS = [
     id: "zen-xander",
     name: "Zen Xander",
     tag: "Satirical prints in aid of real causes",
-    gradient: "linear-gradient(160deg, #ECECEC 0%, #B8B8B8 100%)",
+    gradient: "#EAF1F3",
     logoBadge: "zenxander-logo.png",
     url: "https://zenxander.com/"
   },
