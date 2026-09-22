@@ -408,3 +408,4 @@ input { font-family: inherit; }
   .panels { grid-template-columns: 1fr; }
   .cart-drawer { width: 100%; }
 }
+[hidden] { display: none !important; }
