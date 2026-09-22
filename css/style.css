@@ -362,3 +362,13 @@ input { font-family: inherit; }
 .artist-card.is-disabled { cursor: default; }
 .artist-card.is-disabled .artist-image { opacity: 0.55; }
 .release-external { font-size: 13px; color: var(--muted); margin-top: 10px; display: block; }
+
+.artist-logo-badge {
+  max-width: 60%;
+  max-height: 32px;
+  width: auto;
+  height: auto;
+  background: rgba(255,255,255,0.9);
+  padding: 10px 16px;
+  border-radius: 999px;
+}
