@@ -2,59 +2,52 @@
   "use strict";
 
   const gbp = (n) => "\u00a3" + n.toLocaleString("en-GB");
+  const domainOf = (url) => new URL(url).hostname.replace(/^www\./, "");
 
   /* ---------- render: artists ---------- */
   const artistsGrid = document.getElementById("artists-grid");
-  artistsGrid.innerHTML = ARTISTS.map((a) => `
-    <a href="#" class="artist-card">
-      <div class="artist-image" style="background:${a.gradient}">[Signature piece]</div>
+  artistsGrid.innerHTML = ARTISTS.map((a) => {
+    const inner = `
+      <div class="artist-image" style="background:${a.gradient}">${a.url ? "[Signature piece]" : ""}</div>
       <div>
         <h3 class="artist-name">${a.name}</h3>
         <p class="artist-tag">${a.tag}</p>
-      </div>
-    </a>
-  `).join("");
+        ${a.url ? "" : '<span class="coming-soon-badge" style="color:#6B6B6B;">Store coming soon</span>'}
+      </div>`;
+    return a.url
+      ? `<a href="${a.url}" class="artist-card" target="_blank" rel="noopener">${inner}</a>`
+      : `<div class="artist-card is-disabled">${inner}</div>`;
+  }).join("");
 
-  /* ---------- render: releases (filterable) ---------- */
+  /* ---------- render: releases ---------- */
   const releasesGrid = document.getElementById("releases-grid");
-  const releasesEmpty = document.getElementById("releases-empty");
-  const filterTabs = document.getElementById("filter-tabs");
-  let currentFilter = "all";
-
-  function renderReleases() {
-    const list = RELEASES.filter((r) => currentFilter === "all" || r.type === currentFilter);
-    releasesEmpty.hidden = list.length !== 0;
-    releasesGrid.innerHTML = list.map((r) => `
+  releasesGrid.innerHTML = RELEASES.map((r) => {
+    if (r.kind === "featured") {
+      return `
+        <div class="release-card">
+          <div class="release-image" style="background:${r.gradient}"></div>
+          <div>
+            <p class="release-title">${r.title}</p>
+            <p class="release-artist">${r.artist}</p>
+            <div class="release-row">
+              <span class="release-price">${gbp(r.price)}</span>
+            </div>
+            <a href="${r.url}" class="btn-primary release-add" target="_blank" rel="noopener">Shop this piece</a>
+            <span class="release-external">on ${domainOf(r.url)}</span>
+          </div>
+        </div>`;
+    }
+    return `
       <div class="release-card">
         <div class="release-image" style="background:${r.gradient}"></div>
         <div>
-          <p class="release-title">${r.title}</p>
-          <p class="release-artist">${r.artist}</p>
-          <div class="release-row">
-            <span class="release-price">${gbp(r.price)}</span>
-            <span class="release-edition">${r.editionText}</span>
-          </div>
-          <button class="btn-primary release-add" data-add="${r.id}">Add to bag</button>
+          <p class="release-title">${r.artist}</p>
+          <p class="release-artist">${r.message}</p>
+          <a href="${r.url}" class="btn-primary release-add" target="_blank" rel="noopener">Visit ${r.artist}</a>
+          <span class="release-external">on ${domainOf(r.url)}</span>
         </div>
-      </div>
-    `).join("");
-  }
-  renderReleases();
-
-  filterTabs.addEventListener("click", (e) => {
-    const btn = e.target.closest(".filter-tab");
-    if (!btn) return;
-    currentFilter = btn.dataset.filter;
-    [...filterTabs.querySelectorAll(".filter-tab")].forEach((t) => t.classList.toggle("is-active", t === btn));
-    renderReleases();
-  });
-
-  releasesGrid.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-add]");
-    if (!btn) return;
-    const item = RELEASES.find((r) => r.id === btn.dataset.add);
-    if (item) addToCart(item);
-  });
+      </div>`;
+  }).join("");
 
   /* ---------- mobile menu ---------- */
   const mobileMenu = document.getElementById("mobile-menu");
@@ -79,10 +72,15 @@
   document.getElementById("search-close").addEventListener("click", closeSearch);
   searchInput.addEventListener("input", (e) => renderSearch(e.target.value));
 
+  function releaseLabel(r) { return r.kind === "featured" ? r.title : r.artist + " new release"; }
+  function releaseMeta(r) { return r.kind === "featured" ? `${r.artist}, ${gbp(r.price)}` : r.message; }
+
   function renderSearch(rawQuery) {
     const query = rawQuery.toLowerCase().trim();
     const artists = query ? ARTISTS.filter((a) => a.name.toLowerCase().includes(query)) : ARTISTS;
-    const releases = query ? RELEASES.filter((r) => r.title.toLowerCase().includes(query) || r.artist.toLowerCase().includes(query)) : RELEASES;
+    const releases = query
+      ? RELEASES.filter((r) => releaseLabel(r).toLowerCase().includes(query) || r.artist.toLowerCase().includes(query))
+      : RELEASES;
     const journal = query ? JOURNAL.filter((j) => j.title.toLowerCase().includes(query)) : JOURNAL;
     const hasResults = artists.length + releases.length + journal.length > 0;
 
@@ -95,17 +93,17 @@
     if (artists.length) {
       html += `<div><p class="eyebrow search-group-title">Artists</p>` +
         artists.map((a) => `
-          <a href="#artists" class="search-row" data-close-search>
+          <a href="${a.url || '#artists'}" class="search-row" ${a.url ? 'target="_blank" rel="noopener"' : 'data-close-search'}>
             <span class="search-row-title">${a.name}</span>
-            <span class="search-row-meta">${a.tag}</span>
+            <span class="search-row-meta">${a.url ? a.tag : "Store coming soon"}</span>
           </a>`).join("") + `</div>`;
     }
     if (releases.length) {
-      html += `<div><p class="eyebrow search-group-title">Editions</p>` +
+      html += `<div><p class="eyebrow search-group-title">New releases</p>` +
         releases.map((r) => `
-          <a href="#editions" class="search-row" data-close-search>
-            <span class="search-row-title">${r.title}</span>
-            <span class="search-row-meta">${r.artist}, ${gbp(r.price)}</span>
+          <a href="${r.url}" class="search-row" target="_blank" rel="noopener">
+            <span class="search-row-title">${releaseLabel(r)}</span>
+            <span class="search-row-meta">${releaseMeta(r)}</span>
           </a>`).join("") + `</div>`;
     }
     if (journal.length) {
@@ -121,104 +119,6 @@
   searchResults.addEventListener("click", (e) => {
     if (e.target.closest("[data-close-search]")) closeSearch();
   });
-
-  /* ---------- cart, persisted in localStorage ---------- */
-  const CART_KEY = "artiscope-cart";
-  const cartBackdrop = document.getElementById("cart-backdrop");
-  const cartDrawer = document.getElementById("cart-drawer");
-  const cartBody = document.getElementById("cart-body");
-  const cartFoot = document.getElementById("cart-foot");
-  const cartSubtotalEl = document.getElementById("cart-subtotal");
-  const cartBadge = document.getElementById("cart-badge");
-
-  function loadCart() {
-    try {
-      return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    } catch (err) {
-      return [];
-    }
-  }
-  function saveCart(items) {
-    localStorage.setItem(CART_KEY, JSON.stringify(items));
-  }
-
-  let cart = loadCart();
-
-  function openCart() { cartBackdrop.hidden = false; cartDrawer.hidden = false; }
-  function closeCart() { cartBackdrop.hidden = true; cartDrawer.hidden = true; }
-
-  document.getElementById("cart-toggle").addEventListener("click", () => {
-    if (cartDrawer.hidden) openCart(); else closeCart();
-  });
-  document.getElementById("cart-close").addEventListener("click", closeCart);
-  cartBackdrop.addEventListener("click", closeCart);
-
-  function addToCart(item) {
-    const existing = cart.find((i) => i.id === item.id);
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push({ id: item.id, title: item.title, artist: item.artist, price: item.price, gradient: item.gradient, qty: 1 });
-    }
-    saveCart(cart);
-    renderCart();
-    openCart();
-  }
-
-  function removeFromCart(id) {
-    cart = cart.filter((i) => i.id !== id);
-    saveCart(cart);
-    renderCart();
-  }
-
-  function renderCart() {
-    const count = cart.reduce((sum, i) => sum + i.qty, 0);
-    cartBadge.hidden = count === 0;
-    cartBadge.textContent = String(count);
-
-    if (cart.length === 0) {
-      cartBody.innerHTML = `
-        <div class="cart-empty">
-          <p>Your bag is empty.</p>
-          <a href="#editions" class="btn-ghost" data-close-cart>Browse new releases</a>
-        </div>`;
-      cartFoot.hidden = true;
-      return;
-    }
-
-    cartBody.innerHTML = cart.map((i) => `
-      <div class="cart-item">
-        <div class="cart-item-thumb" style="background:${i.gradient}"></div>
-        <div class="cart-item-body">
-          <p class="cart-item-title">${i.title}</p>
-          <p class="cart-item-artist">${i.artist}</p>
-          <div class="cart-item-row">
-            <span>Qty ${i.qty}</span>
-            <span>${gbp(i.price)}</span>
-          </div>
-        </div>
-        <button class="cart-remove" aria-label="Remove item" data-remove="${i.id}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
-        </button>
-      </div>
-    `).join("");
-
-    const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-    cartSubtotalEl.textContent = gbp(subtotal);
-    cartFoot.hidden = false;
-  }
-
-  cartBody.addEventListener("click", (e) => {
-    const removeBtn = e.target.closest("[data-remove]");
-    if (removeBtn) removeFromCart(removeBtn.dataset.remove);
-    if (e.target.closest("[data-close-cart]")) closeCart();
-  });
-
-  document.getElementById("checkout-btn").addEventListener("click", () => {
-    alert("This is a prototype, checkout is not connected to real payments yet.");
-  });
-
-  renderCart();
 
   /* ---------- newsletter (front end only, no backend yet) ---------- */
   const newsletterForm = document.getElementById("newsletter-form");
