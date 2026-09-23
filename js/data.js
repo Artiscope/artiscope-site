@@ -25,7 +25,7 @@ const ARTISTS = [
     id: "konn-artiss",
     name: "Konn Artiss",
     tag: "Geometric line, sharp contrast",
-    gradient: "#0A0A0A",
+    gradient: "#000000",
     logoBadge: "konn-artiss-logo.png",
     url: null
   },
