@@ -62,12 +62,13 @@ const ARTISTS = [
   when the exact price still needs confirming from the artist.
 */
 const WORKS = [
-  {
+    {
     id: "w1",
     title: "Space Rats \u2013 Red",
     artist: "Zen Xander",
     price: 250,
     url: "https://zenxander.com/products/space-rats-red",
+    photo: "https://zenxander.com/cdn/shop/files/White-frame-None-mount-landscape_27.png?v=1763568300",
     image: "linear-gradient(160deg, #ECECEC 0%, #B8B8B8 100%)"
   },
   {
@@ -76,6 +77,7 @@ const WORKS = [
     artist: "Zen Xander",
     price: 250,
     url: "https://zenxander.com/products/tim-bear",
+    photo: "https://zenxander.com/cdn/shop/files/White-frame-None-mount-landscape_8.png?v=1763568396",
     image: "linear-gradient(160deg, #D8D8D8 0%, #9E9E9E 100%)"
   },
   {
