@@ -4,60 +4,72 @@
   const gbp = (n) => "\u00a3" + n.toLocaleString("en-GB");
   const domainOf = (url) => new URL(url).hostname.replace(/^www\./, "");
 
-  /* ---------- render: artists ---------- */
-  const artistsGrid = document.getElementById("artists-grid");
-  artistsGrid.innerHTML = ARTISTS.map((a) => {
-    let imageStyle = `background:${a.gradient}`;
-    let imageContent = a.url ? "[Signature piece]" : "";
-    if (a.coverImage) {
-      imageStyle = `background-image:url(${a.coverImage}); background-size:cover; background-position:center;`;
-      imageContent = "";
-    }
-    if (a.logoBadge) {
-      imageStyle += "; align-items:center; justify-content:center;";
-      imageContent = `<img src="${a.logoBadge}" alt="${a.name} logo" class="artist-logo-badge">`;
-    }
-    const inner = `
-      <div class="artist-image" style="${imageStyle}">${imageContent}</div>
-      <div>
-        <h3 class="artist-name">${a.name}</h3>
-        <p class="artist-tag">${a.tag}</p>
-        ${a.url ? "" : '<span class="coming-soon-badge" style="color:#6B6B6B;">Store coming soon</span>'}
-      </div>`;
-    return a.url
-      ? `<a href="${a.url}" class="artist-card" target="_blank" rel="noopener">${inner}</a>`
-      : `<div class="artist-card is-disabled">${inner}</div>`;
+  /* ---------- build artist chapters ---------- */
+  const artistsMount = document.getElementById("artists");
+  const artistSections = ARTISTS.map((a) => {
+    const isDarkBg = a.navTheme === "light"; // a "light" nav theme means the section behind it is dark
+    const textColor = isDarkBg ? "#FFFFFF" : "#0A0A0A";
+    const btnBg = isDarkBg ? "#FFFFFF" : "#0A0A0A";
+    const btnColor = isDarkBg ? "#0A0A0A" : "#FFFFFF";
+    const logo = a.logoBadge
+      ? `<img src="${a.logoBadge}" alt="${a.name} logo" class="artist-logo-large">`
+      : `<h2 class="artist-name-large">${a.name}</h2>`;
+    const cta = a.url
+      ? `<a href="${a.url}" class="btn-primary" style="background:${btnBg}; color:${btnColor};" target="_blank" rel="noopener">Visit ${domainOf(a.url)}</a>`
+      : `<span class="coming-soon-badge">Store coming soon</span>`;
+
+    return `
+      <section class="chapter artist-chapter" data-nav-theme="${a.navTheme}" style="background:${a.bg}; color:${textColor};">
+        <div class="artist-chapter-inner reveal">
+          ${logo}
+          <p class="artist-tag-large">${a.tag}</p>
+          <div class="artist-cta">${cta}</div>
+        </div>
+      </section>`;
+  }).join("");
+  artistsMount.outerHTML = artistSections;
+
+  /* ---------- build works grid ---------- */
+  const worksGrid = document.getElementById("works-grid");
+  worksGrid.innerHTML = WORKS.map((w) => {
+    const priceText = w.price != null ? gbp(w.price) : (w.priceLabel || "");
+    return `
+      <a href="${w.url}" class="work-card" target="_blank" rel="noopener">
+        <div class="work-image" style="background:${w.image}"></div>
+        <div>
+          <p class="work-title">${w.title}</p>
+          <p class="work-artist">${w.artist}</p>
+          <div class="work-row">
+            <span class="work-price">${priceText}</span>
+          </div>
+          <span class="work-link">View on ${domainOf(w.url)}</span>
+        </div>
+      </a>`;
   }).join("");
 
-  /* ---------- render: releases ---------- */
-  const releasesGrid = document.getElementById("releases-grid");
-  releasesGrid.innerHTML = RELEASES.map((r) => {
-    if (r.kind === "featured") {
-      return `
-        <div class="release-card">
-          <div class="release-image" style="background:${r.gradient}"></div>
-          <div>
-            <p class="release-title">${r.title}</p>
-            <p class="release-artist">${r.artist}</p>
-            <div class="release-row">
-              <span class="release-price">${gbp(r.price)}</span>
-            </div>
-            <a href="${r.url}" class="btn-primary release-add" target="_blank" rel="noopener">Shop this piece</a>
-            <span class="release-external">on ${domainOf(r.url)}</span>
-          </div>
-        </div>`;
-    }
-    return `
-      <div class="release-card">
-        <div class="release-image" style="background:${r.gradient}"></div>
-        <div>
-          <p class="release-title">${r.artist}</p>
-          <p class="release-artist">${r.message}</p>
-          <a href="${r.url}" class="btn-primary release-add" target="_blank" rel="noopener">Visit ${r.artist}</a>
-          <span class="release-external">on ${domainOf(r.url)}</span>
-        </div>
-      </div>`;
-  }).join("");
+  /* ---------- scroll reveal ---------- */
+  const revealEls = document.querySelectorAll(".reveal");
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-in");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach((el) => revealObserver.observe(el));
+
+  /* ---------- adaptive nav colour ---------- */
+  const nav = document.getElementById("site-nav");
+  const themedSections = document.querySelectorAll("[data-nav-theme]");
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        nav.dataset.theme = entry.target.dataset.navTheme;
+      }
+    });
+  }, { rootMargin: "-50% 0px -50% 0px" });
+  themedSections.forEach((s) => navObserver.observe(s));
 
   /* ---------- mobile menu ---------- */
   const mobileMenu = document.getElementById("mobile-menu");
@@ -82,17 +94,14 @@
   document.getElementById("search-close").addEventListener("click", closeSearch);
   searchInput.addEventListener("input", (e) => renderSearch(e.target.value));
 
-  function releaseLabel(r) { return r.kind === "featured" ? r.title : r.artist + " new release"; }
-  function releaseMeta(r) { return r.kind === "featured" ? `${r.artist}, ${gbp(r.price)}` : r.message; }
-
   function renderSearch(rawQuery) {
     const query = rawQuery.toLowerCase().trim();
     const artists = query ? ARTISTS.filter((a) => a.name.toLowerCase().includes(query)) : ARTISTS;
-    const releases = query
-      ? RELEASES.filter((r) => releaseLabel(r).toLowerCase().includes(query) || r.artist.toLowerCase().includes(query))
-      : RELEASES;
+    const works = query
+      ? WORKS.filter((w) => w.title.toLowerCase().includes(query) || w.artist.toLowerCase().includes(query))
+      : WORKS;
     const journal = query ? JOURNAL.filter((j) => j.title.toLowerCase().includes(query)) : JOURNAL;
-    const hasResults = artists.length + releases.length + journal.length > 0;
+    const hasResults = artists.length + works.length + journal.length > 0;
 
     if (!hasResults) {
       searchResults.innerHTML = `<p class="search-empty">Nothing matches that search. Try an artist name, a piece, or a topic.</p>`;
@@ -108,12 +117,12 @@
             <span class="search-row-meta">${a.url ? a.tag : "Store coming soon"}</span>
           </a>`).join("") + `</div>`;
     }
-    if (releases.length) {
-      html += `<div><p class="eyebrow search-group-title">New releases</p>` +
-        releases.map((r) => `
-          <a href="${r.url}" class="search-row" target="_blank" rel="noopener">
-            <span class="search-row-title">${releaseLabel(r)}</span>
-            <span class="search-row-meta">${releaseMeta(r)}</span>
+    if (works.length) {
+      html += `<div><p class="eyebrow search-group-title">Work</p>` +
+        works.map((w) => `
+          <a href="${w.url}" class="search-row" target="_blank" rel="noopener">
+            <span class="search-row-title">${w.title}</span>
+            <span class="search-row-meta">${w.artist}${w.price != null ? ", " + gbp(w.price) : ""}</span>
           </a>`).join("") + `</div>`;
     }
     if (journal.length) {
@@ -130,7 +139,7 @@
     if (e.target.closest("[data-close-search]")) closeSearch();
   });
 
-  /* ---------- newsletter (front end only, no backend yet) ---------- */
+  /* ---------- newsletter ---------- */
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterSuccess = document.getElementById("newsletter-success");
   newsletterForm.addEventListener("submit", (e) => {
