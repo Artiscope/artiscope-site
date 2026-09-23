@@ -29,13 +29,16 @@
   }).join("");
   artistsMount.outerHTML = artistSections;
 
-  /* ---------- build works grid ---------- */
+   /* ---------- build works grid ---------- */
   const worksGrid = document.getElementById("works-grid");
-  worksGrid.innerHTML = WORKS.map((w) => {
+  worksGrid.innerHTML = WORKS.map((w, i) => {
     const priceText = w.price != null ? gbp(w.price) : (w.priceLabel || "");
+    const media = w.photo
+      ? `<img src="${w.photo}" alt="${w.title} by ${w.artist}" class="work-photo kenburns" loading="lazy">`
+      : "";
     return `
-      <a href="${w.url}" class="work-card" target="_blank" rel="noopener">
-        <div class="work-image" style="background:${w.image}"></div>
+      <a href="${w.url}" class="work-card reveal" style="transition-delay:${i * 90}ms;" target="_blank" rel="noopener">
+        <div class="work-image" style="background:${w.image}">${media}</div>
         <div>
           <p class="work-title">${w.title}</p>
           <p class="work-artist">${w.artist}</p>
