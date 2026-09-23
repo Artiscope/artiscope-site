@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artiscope, contemporary art publisher</title>
-<meta name="description" content="Museum quality prints and originals, from artists worldwide.">
+<meta name="description" content="Discover independent artists and go straight to their own stores. Artiscope is the starting point, not the shop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Work+Sans:wght@400;500&display=swap">
 <link rel="stylesheet" href="css/style.css">
@@ -12,23 +12,25 @@
 <body>
 
 <!-- NAV -->
-<header class="nav">
+<header class="nav" id="site-nav" data-theme="light">
   <div class="nav-inner">
-    <a href="#" class="logo"><img src="logo-black.png" alt="Artiscope" class="logo-img"></a>
+    <a href="#top" class="logo">
+      <img src="logo-black.png" alt="Artiscope" class="logo-img logo-dark">
+      <img src="logo-white.png" alt="Artiscope" class="logo-img logo-light">
+    </a>
     <nav class="desktop-nav" aria-label="Primary">
       <a href="#artists" class="nav-link">Artists</a>
-      <a href="#editions" class="nav-link">Editions</a>
-      <a href="#originals" class="nav-link">Originals</a>
-      <a href="#about" class="nav-link">About</a>
+      <a href="#work" class="nav-link">Work</a>
       <a href="#journal" class="nav-link">Journal</a>
+      <a href="#about" class="nav-link">About</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
     <div class="nav-icons">
       <button class="icon-btn" id="search-toggle" aria-label="Search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       </button>
       <button class="icon-btn hamburger" id="menu-toggle" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
     </div>
   </div>
@@ -44,10 +46,9 @@
   </div>
   <nav class="mobile-menu-links" aria-label="Mobile primary">
     <a href="#artists">Artists</a>
-    <a href="#editions">Editions</a>
-    <a href="#originals">Originals</a>
-    <a href="#about">About</a>
+    <a href="#work">Work</a>
     <a href="#journal">Journal</a>
+    <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </nav>
 </div>
@@ -61,143 +62,111 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
       </button>
     </div>
-    <label for="search-input" class="visually-hidden">Search artists, editions and journal</label>
-    <input id="search-input" class="search-input" type="text" placeholder="Search artists, editions, journal" autocomplete="off">
+    <label for="search-input" class="visually-hidden">Search artists and journal</label>
+    <input id="search-input" class="search-input" type="text" placeholder="Search artists, work, journal" autocomplete="off">
     <div id="search-results" class="search-results"></div>
   </div>
 </div>
 
-<main>
+<main id="top">
 
   <!-- HERO -->
-  <section class="hero">
-    <p class="eyebrow">Contemporary art publisher</p>
-    <h1>Museum quality prints and originals, from artists worldwide</h1>
-    <p class="hero-copy">Artiscope publishes limited editions and original works from a small group of represented artists, each piece produced and shipped with the same care as the last.</p>
-    <a href="#editions" class="btn-primary">Explore the collection</a>
-    <div class="hero-image">[Hero artwork placeholder]</div>
-  </section>
-
-  <!-- ARTISTS -->
-  <section id="artists" class="section">
-    <div class="section-head">
-      <p class="eyebrow">The artists</p>
-      <h2>One publisher, several artists</h2>
+  <section class="chapter hero" data-nav-theme="light">
+    <div class="chapter-inner hero-inner reveal">
+      <p class="eyebrow eyebrow-light">Contemporary art publisher</p>
+      <h1 class="display-1">Art worth<br>discovering.</h1>
+      <p class="hero-copy">Independent artists, each running their own studio and their own shop. Artiscope is where you find them.</p>
+      <a href="#artists" class="btn-primary btn-light">Meet the artists</a>
     </div>
-    <div class="artists-grid" id="artists-grid"></div>
-  </section>
-
-  <!-- RELEASES -->
-  <section id="editions" class="section section-tinted">
-    <div class="section-head">
-      <p class="eyebrow">Just released</p>
-      <h2>New this month</h2>
-      <p class="section-subtext">Each piece is sold and shipped by the artist's own store, Artiscope just points the way.</p>
+    <div class="scroll-cue" aria-hidden="true">
+      <span></span>
     </div>
-    <div class="releases-grid" id="releases-grid"></div>
   </section>
 
-  <!-- EDITORIAL -->
-  <section id="journal" class="section">
-    <div class="editorial">
+  <!-- INTRO STATEMENT -->
+  <section class="chapter statement" data-nav-theme="dark">
+    <p class="statement-text reveal">
+      Every artist here keeps full control of their own work, their own prices,
+      and their own customers. <span class="statement-fade">Artiscope never touches a sale,
+      it just makes the introduction.</span>
+    </p>
+  </section>
+
+  <!-- ARTIST CHAPTERS -->
+  <div id="artists"></div>
+
+  <!-- FEATURED WORK -->
+  <section class="chapter work-section" id="work" data-nav-theme="dark">
+    <div class="section-head reveal">
+      <p class="eyebrow">Recent work</p>
+      <h2 class="display-2">A few pieces worth a closer look</h2>
+      <p class="section-subtext">Every one of these is sold and shipped by the artist directly. Follow the link to see it properly and buy it on their own site.</p>
+    </div>
+    <div class="works-grid" id="works-grid"></div>
+  </section>
+
+  <!-- TRUST STATEMENTS -->
+  <section class="chapter trust" data-nav-theme="light">
+    <div class="trust-list">
+      <p class="trust-line reveal">You buy directly from the artist, every time.</p>
+      <p class="trust-line reveal">No middleman handling your payment or your data.</p>
+      <p class="trust-line reveal">Shipping, framing, and returns are all handled by them, not us.</p>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="chapter editorial" id="journal" data-nav-theme="dark">
+    <div class="editorial-split reveal">
       <div class="editorial-image"></div>
       <div class="editorial-copy">
         <p class="eyebrow">In the studio</p>
-        <h2>Frank Canvas on colour, layering, and starting over</h2>
+        <h2 class="display-3">Frank Canvas on colour, layering, and starting over</h2>
         <p>A short conversation about how a piece begins as one idea and ends as another, and why he never plans the final layer in advance.</p>
-        <a href="#" class="btn-ghost">Read the story</a>
+        <a href="https://frankcanvas.com/" class="btn-ghost" target="_blank" rel="noopener">Visit frankcanvas.com</a>
       </div>
     </div>
   </section>
 
-  <!-- ORIGINALS VS EDITIONS -->
-  <section id="originals" class="section">
-    <div class="panels">
-      <a href="#" class="panel">
-        <h3>Originals</h3>
-        <p>One of a kind pieces, direct from the artist. Each comes with a signed certificate of authenticity.</p>
-        <span class="btn-ghost">Shop originals</span>
-      </a>
-      <a href="#" class="panel">
-        <h3>Limited editions</h3>
-        <p>Museum quality prints, produced in small numbered runs. Once a run sells out, it does not return.</p>
-        <span class="btn-ghost">Shop editions</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- TRUST -->
-  <section class="trust">
-    <div class="trust-grid">
-      <div class="trust-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"></path></svg>
-        <p class="trust-title">Certificate of authenticity</p>
-        <p class="trust-copy">With every original and every numbered print.</p>
-      </div>
-      <div class="trust-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
-        <p class="trust-title">Museum grade framing</p>
-        <p class="trust-copy">Framing options built for archival prints.</p>
-      </div>
-      <div class="trust-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><line x1="3" y1="12" x2="21" y2="12"></line></svg>
-        <p class="trust-title">Worldwide shipping</p>
-        <p class="trust-copy">Every piece packed and insured for its journey.</p>
-      </div>
-      <div class="trust-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
-        <p class="trust-title">One publisher, several artists</p>
-        <p class="trust-copy">Buy directly from each artist's own store, Artiscope just helps you find them.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- NEWSLETTER -->
-  <section id="about" class="section newsletter">
-    <h2>Hear about new releases first</h2>
-    <p>One email, sent only when a new piece or artist joins the collection.</p>
-    <form class="newsletter-form" id="newsletter-form">
+  <!-- ABOUT / NEWSLETTER -->
+  <section class="chapter newsletter" id="about" data-nav-theme="dark">
+    <h2 class="display-3 reveal">Hear about new artists first</h2>
+    <p class="reveal">One email, sent only when someone new joins Artiscope, or a piece is worth knowing about.</p>
+    <form class="newsletter-form reveal" id="newsletter-form">
       <label for="newsletter-email" class="visually-hidden">Email address</label>
       <input id="newsletter-email" type="email" placeholder="Email address" required>
       <button class="btn-primary" type="submit">Sign up</button>
     </form>
-    <p class="newsletter-success" id="newsletter-success" hidden>Thanks, you are on the list.</p>
+    <p class="newsletter-success" id="newsletter-success" hidden>Thanks, you're on the list.</p>
   </section>
 
 </main>
 
 <!-- FOOTER -->
-<footer id="contact" class="footer">
+<footer id="contact" class="footer" data-nav-theme="light">
   <div class="footer-grid">
     <div>
       <img src="logo-white.png" alt="Artiscope" class="footer-logo-img">
       <p class="footer-blurb">A contemporary art publisher, connecting you to independent artists worldwide.</p>
     </div>
     <div class="footer-col">
-      <p class="footer-heading">Shop</p>
-      <a href="#editions" class="footer-link">Editions</a>
-      <a href="#originals" class="footer-link">Originals</a>
+      <p class="footer-heading">Explore</p>
       <a href="#artists" class="footer-link">Artists</a>
+      <a href="#work" class="footer-link">Work</a>
+      <a href="#journal" class="footer-link">Journal</a>
     </div>
     <div class="footer-col">
       <p class="footer-heading">Company</p>
       <a href="#about" class="footer-link">About</a>
-      <a href="#journal" class="footer-link">Journal</a>
       <a href="#contact" class="footer-link">Contact</a>
     </div>
     <div class="footer-col">
-      <p class="footer-heading">Support</p>
-      <a href="#" class="footer-link">Shipping</a>
-      <a href="#" class="footer-link">Returns</a>
-      <a href="#" class="footer-link">FAQs</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Artiscope. All rights reserved.</p>
-    <div class="footer-legal">
+      <p class="footer-heading">Legal</p>
       <a href="#" class="footer-link">Terms</a>
       <a href="#" class="footer-link">Privacy</a>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Artiscope. All rights reserved.</p>
   </div>
 </footer>
 
