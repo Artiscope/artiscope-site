@@ -7,7 +7,7 @@
   /* ---------- build artist chapters ---------- */
   const artistsMount = document.getElementById("artists");
   const artistSections = ARTISTS.map((a) => {
-    const isDarkBg = a.navTheme === "light"; // a "light" nav theme means the section behind it is dark
+       const isDarkBg = a.navTheme === "light"; // a "light" nav theme means the section behind it is dark
     const textColor = isDarkBg ? "#FFFFFF" : "#0A0A0A";
     const btnBg = isDarkBg ? "#FFFFFF" : "#0A0A0A";
     const btnColor = isDarkBg ? "#0A0A0A" : "#FFFFFF";
@@ -17,9 +17,13 @@
     const cta = a.url
       ? `<a href="${a.url}" class="btn-primary" style="background:${btnBg}; color:${btnColor};" target="_blank" rel="noopener">Visit ${domainOf(a.url)}</a>`
       : `<span class="coming-soon-badge">Store coming soon</span>`;
+    const sectionStyle = a.bgImage
+      ? `background-image:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%), url('${a.bgImage}'); background-size:cover; background-position:center; color:${textColor};`
+      : `background:${a.bg}; color:${textColor};`;
+    const photoClass = a.bgImage ? " artist-chapter-photo" : "";
 
     return `
-      <section class="chapter artist-chapter" data-nav-theme="${a.navTheme}" style="background:${a.bg}; color:${textColor};">
+      <section class="chapter artist-chapter${photoClass}" data-nav-theme="${a.navTheme}" style="${sectionStyle}">
         <div class="artist-chapter-inner reveal">
           ${logo}
           <p class="artist-tag-large">${a.tag}</p>
