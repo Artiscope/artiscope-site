@@ -42,7 +42,7 @@ const ARTISTS = [
     name: "Zen Xander",
     tag: "Satirical prints in aid of real causes",
     bg: "#EAF1F3",
-    bgImage: "https://zenxander.com/cdn/shop/files/White-frame-None-mount-landscape_27.png?v=1763568300",
+    bgImage: "zenxander-bg.jpg",
     navTheme: "light",
     logoBadge: "zenxander-logo.png",
     url: "https://zenxander.com/"
