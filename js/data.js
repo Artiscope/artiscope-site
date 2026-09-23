@@ -38,11 +38,12 @@ const ARTISTS = [
     url: null
   },
   {
-    id: "zen-xander",
+       id: "zen-xander",
     name: "Zen Xander",
     tag: "Satirical prints in aid of real causes",
     bg: "#EAF1F3",
-    navTheme: "dark",
+    bgImage: "https://zenxander.com/cdn/shop/files/White-frame-None-mount-landscape_27.png?v=1763568300",
+    navTheme: "light",
     logoBadge: "zenxander-logo.png",
     url: "https://zenxander.com/"
   },
