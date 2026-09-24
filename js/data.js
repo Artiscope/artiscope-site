@@ -132,12 +132,13 @@ const FEATURED = [
   {
     image: "featured-konn-artiss.jpg",
     alt: "Mixed-media artwork by Konn Artiss: a glossy black disc bearing the name KONN ARTISS over layered yellow, red and black paint and torn posters",
-    artist: "Konn Artiss"
+    artist: "Konn Artiss",
+    position: "center 100%"
   },
   {
     image: "featured-space-rats.jpg",
     alt: "Stencil artwork by Zen Xander of two rats in space helmets with spray-can air tanks, standing beside a rocket on a violet background",
     artist: "Zen Xander",
-    position: "center 75%"
+    position: "72% 75%"
   }
 ];

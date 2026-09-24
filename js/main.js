@@ -141,7 +141,7 @@
     };
 
     if (multiple) {
-      // Autoplay, holding while the pointer or focus is on the slideshow,
+      // Autoplay, holding while the pointer or focus is on its controls,
       // while the tab is hidden, or while the visitor has paused it.
       // Starts paused for visitors who prefer reduced motion.
       const controls = document.createElement("div");
@@ -170,11 +170,11 @@
 
       dots.forEach((dot, i) => dot.addEventListener("click", () => { show(i); schedule(); }));
       toggle.addEventListener("click", () => { paused = !paused; renderToggle(); schedule(); });
-      featured.addEventListener("mouseenter", () => { held = true; schedule(); });
-      featured.addEventListener("mouseleave", () => { held = false; schedule(); });
-      featured.addEventListener("focusin", () => { held = true; schedule(); });
-      featured.addEventListener("focusout", (e) => {
-        if (!featured.contains(e.relatedTarget)) { held = false; schedule(); }
+      controls.addEventListener("mouseenter", () => { held = true; schedule(); });
+      controls.addEventListener("mouseleave", () => { held = false; schedule(); });
+      controls.addEventListener("focusin", () => { held = true; schedule(); });
+      controls.addEventListener("focusout", (e) => {
+        if (!controls.contains(e.relatedTarget)) { held = false; schedule(); }
       });
       document.addEventListener("visibilitychange", schedule);
 
