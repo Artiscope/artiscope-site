@@ -122,3 +122,22 @@ const JOURNAL = [
 const CONTACT = {
   email: null
 };
+
+/*
+  Homepage featured artwork, shown as a slideshow in the hero. "artist"
+  is optional and appears beside the "Featured artwork" label; "position"
+  is optional and moves the crop (CSS object-position) for that image.
+*/
+const FEATURED = [
+  {
+    image: "featured-konn-artiss.jpg",
+    alt: "Mixed-media artwork by Konn Artiss: a glossy black disc bearing the name KONN ARTISS over layered yellow, red and black paint and torn posters",
+    artist: "Konn Artiss"
+  },
+  {
+    image: "featured-space-rats.jpg",
+    alt: "Stencil artwork of two rats in space helmets with spray-can air tanks, standing beside a rocket on a violet background",
+    artist: null,
+    position: "center 75%"
+  }
+];
