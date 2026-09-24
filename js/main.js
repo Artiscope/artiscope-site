@@ -224,6 +224,41 @@
     });
   }
 
+  /* ---------- contact form (about.html) ---------- */
+  const contactForm = document.getElementById("contact-form");
+  if (contactForm) {
+    const contactStatus = document.getElementById("contact-status");
+    const connected = Boolean(CONTACT.email);
+    document.getElementById("contact-unconnected").hidden = connected;
+
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const invalid = contactForm.querySelector(":invalid");
+      if (invalid) {
+        contactStatus.textContent = invalid.type === "email" && invalid.value
+          ? "Please check your email address."
+          : `Please fill in ${invalid.labels[0].textContent.toLowerCase()}.`;
+        invalid.focus();
+        return;
+      }
+      if (!connected) {
+        contactStatus.textContent = "This form isn't connected yet, so nothing was sent.";
+        return;
+      }
+      const data = new FormData(contactForm);
+      const body = [
+        data.get("message"),
+        "",
+        `Name: ${data.get("name")}`,
+        `Email: ${data.get("email")}`,
+        data.get("phone") ? `Phone: ${data.get("phone")}` : ""
+      ].join("\n").trim();
+      const subject = `Message from ${data.get("name")}`;
+      window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      contactStatus.textContent = "Your email app should open with the message ready to send.";
+    });
+  }
+
   /* ---------- transition veil on external links ---------- */
   // External links open in a new tab, so the veil is a brief fade to black
   // naming where you're headed, then lifts again behind the new tab.

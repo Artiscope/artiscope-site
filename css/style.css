@@ -402,6 +402,34 @@ input { font-family: inherit; }
   display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6;
 }
 
+/* ---------- CONTACT ---------- */
+.contact { min-height: auto; padding: 140px 32px; }
+.contact-inner {
+  width: 100%; max-width: 700px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+}
+.contact-inner .display-2 { margin-bottom: 8px; }
+.contact-intro { font-size: 15px; color: rgba(255,255,255,0.75); }
+.contact-form {
+  width: 100%; margin-top: 36px; text-align: left;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px 12px;
+}
+.contact-field { display: flex; flex-direction: column; gap: 10px; }
+.contact-field-wide { grid-column: 1 / -1; }
+.contact-field label { font-size: 14px; color: rgba(255,255,255,0.85); }
+.contact-field input,
+.contact-field textarea {
+  width: 100%; padding: 12px 14px; font-size: 15px; color: #FFFFFF;
+  background: #000000; border: 1px solid rgba(255,255,255,0.7); border-radius: 0;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.contact-field textarea { resize: vertical; min-height: 120px; }
+.contact-field input:focus,
+.contact-field textarea:focus { outline: none; border-color: #FFFFFF; box-shadow: 0 0 0 1px #FFFFFF; }
+.contact-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+.contact-status { font-size: 14px; color: rgba(255,255,255,0.75); }
+.contact .placeholder-note { margin-top: 28px; }
+
 /* ---------- TRANSITION VEIL ---------- */
 .veil {
   position: fixed; inset: 0; z-index: 300; background: var(--ink);
@@ -438,6 +466,8 @@ input { font-family: inherit; }
   .about-split { grid-template-columns: 1fr; gap: 24px; }
   .page-head { min-height: 56vh; padding: 140px 24px 80px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  .contact-form { grid-template-columns: 1fr; }
+  .contact { padding: 100px 24px; }
   .footer-grid > :first-child { grid-column: 1 / -1; }
   .chapter { padding: 100px 24px; }
 }
