@@ -101,6 +101,15 @@ const WORKS = [
   }
 ];
 
+/*
+  Journal posts, newest first. "kicker", "excerpt" and "url" are optional;
+  a post with a "url" links out to where the full piece lives.
+*/
 const JOURNAL = [
-  { title: "Frank Canvas on colour, layering, and starting over" }
+  {
+    title: "Frank Canvas on colour, layering, and starting over",
+    kicker: "In the studio",
+    excerpt: "A short conversation about how a piece begins as one idea and ends as another, and why he never plans the final layer in advance.",
+    url: "https://frankcanvas.com/"
+  }
 ];

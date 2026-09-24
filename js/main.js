@@ -1,58 +1,117 @@
 (function () {
   "use strict";
 
-  const gbp = (n) => "\u00a3" + n.toLocaleString("en-GB");
+  const gbp = (n) => "£" + n.toLocaleString("en-GB");
   const domainOf = (url) => new URL(url).hostname.replace(/^www\./, "");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /* ---------- build artist chapters ---------- */
-  const artistsMount = document.getElementById("artists");
-  const artistSections = ARTISTS.map((a) => {
-       const isDarkBg = a.navTheme === "light"; // a "light" nav theme means the section behind it is dark
-    const textColor = isDarkBg ? "#FFFFFF" : "#0A0A0A";
-    const btnBg = isDarkBg ? "#FFFFFF" : "#0A0A0A";
-    const btnColor = isDarkBg ? "#0A0A0A" : "#FFFFFF";
-    const logo = a.logoBadge
-      ? `<img src="${a.logoBadge}" alt="${a.name} logo" class="artist-logo-large">`
-      : `<h2 class="artist-name-large">${a.name}</h2>`;
-    const cta = a.url
-      ? `<a href="${a.url}" class="btn-primary" style="background:${btnBg}; color:${btnColor};" target="_blank" rel="noopener">Visit ${domainOf(a.url)}</a>`
-      : `<span class="coming-soon-badge">Store coming soon</span>`;
-    const sectionStyle = a.bgImage
-      ? `background-image:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%), url('${a.bgImage}'); background-size:cover; background-position:center; color:${textColor};`
-      : `background:${a.bg}; color:${textColor};`;
-    const photoClass = a.bgImage ? " artist-chapter-photo" : "";
+  /*
+    Every page loads this same script. Each block below only runs when the
+    page has the element it renders into, so pages opt in by markup alone.
+  */
 
-    return `
-      <section class="chapter artist-chapter${photoClass}" data-nav-theme="${a.navTheme}" style="${sectionStyle}">
-        <div class="artist-chapter-inner reveal">
-          ${logo}
-          <p class="artist-tag-large">${a.tag}</p>
-          <div class="artist-cta">${cta}</div>
-        </div>
-      </section>`;
-  }).join("");
-  artistsMount.outerHTML = artistSections;
+  /* ---------- artist cards (artists.html) ---------- */
+  const artistsGrid = document.getElementById("artists-grid");
+  if (artistsGrid) {
+    artistsGrid.innerHTML = ARTISTS.map((a, i) => {
+      const isDarkBg = a.navTheme === "light"; // a "light" nav theme means the artist's background is dark
+      const textColor = isDarkBg ? "#FFFFFF" : "#0A0A0A";
+      const btnBg = isDarkBg ? "#FFFFFF" : "#0A0A0A";
+      const btnColor = isDarkBg ? "#0A0A0A" : "#FFFFFF";
+      const logo = a.logoBadge
+        ? `<img src="${a.logoBadge}" alt="${a.name} logo" class="artist-logo-large">`
+        : `<h2 class="artist-name-large">${a.name}</h2>`;
+      const cta = a.url
+        ? `<a href="${a.url}" class="btn-primary" style="background:${btnBg}; color:${btnColor};" target="_blank" rel="noopener">Visit ${domainOf(a.url)}</a>`
+        : `<span class="coming-soon-badge">Store coming soon</span>`;
+      const cardStyle = a.bgImage ? `color:${textColor};` : `background:${a.bg}; color:${textColor};`;
+      const photo = a.bgImage
+        ? `<div class="artist-card-photo kenburns" style="background-image:url('${a.bgImage}');" aria-hidden="true"></div>`
+        : "";
 
-   /* ---------- build works grid ---------- */
-  const worksGrid = document.getElementById("works-grid");
-  worksGrid.innerHTML = WORKS.map((w, i) => {
-    const priceText = w.price != null ? gbp(w.price) : (w.priceLabel || "");
-    const media = w.photo
-      ? `<img src="${w.photo}" alt="${w.title} by ${w.artist}" class="work-photo kenburns" loading="lazy">`
-      : "";
-    return `
-      <a href="${w.url}" class="work-card reveal" style="transition-delay:${i * 90}ms;" target="_blank" rel="noopener">
-        <div class="work-image" style="background:${w.image}">${media}</div>
-        <div>
-          <p class="work-title">${w.title}</p>
-          <p class="work-artist">${w.artist}</p>
-          <div class="work-row">
-            <span class="work-price">${priceText}</span>
+      return `
+        <article class="artist-card${a.bgImage ? " artist-card-has-photo" : ""} reveal" id="${a.id}" style="${cardStyle} transition-delay:${(i % 3) * 90}ms;">
+          ${photo}
+          <div class="artist-card-inner">
+            ${logo}
+            <p class="artist-tag-large">${a.tag}</p>
+            <div class="artist-cta">${cta}</div>
           </div>
-          <span class="work-link">View on ${domainOf(w.url)}</span>
+        </article>`;
+    }).join("");
+  }
+
+  /* ---------- works grid (work.html) ---------- */
+  const worksGrid = document.getElementById("works-grid");
+  if (worksGrid) {
+    // Empty slots that show how the grid fills out as more pieces arrive.
+    const placeholderCount = Math.max(0, 8 - WORKS.length);
+    const cards = WORKS.map((w) => {
+      const priceText = w.price != null ? gbp(w.price) : (w.priceLabel || "");
+      const media = w.photo
+        ? `<img src="${w.photo}" alt="${w.title} by ${w.artist}" class="work-photo kenburns" loading="lazy">`
+        : "";
+      return (delay) => `
+        <a href="${w.url}" class="work-card reveal" style="transition-delay:${delay}ms;" target="_blank" rel="noopener">
+          <div class="work-image" style="background:${w.image}">${media}</div>
+          <div>
+            <p class="work-title">${w.title}</p>
+            <p class="work-artist">${w.artist}</p>
+            <div class="work-row">
+              <span class="work-price">${priceText}</span>
+            </div>
+            <span class="work-link">View on ${domainOf(w.url)}</span>
+          </div>
+        </a>`;
+    });
+    for (let i = 0; i < placeholderCount; i++) {
+      cards.push((delay) => `
+        <div class="work-card work-card-placeholder reveal" style="transition-delay:${delay}ms;" aria-hidden="true">
+          <div class="work-image"><span class="placeholder-note">Placeholder</span></div>
+          <div>
+            <p class="work-title">Future piece</p>
+            <p class="work-artist">Artist to be announced</p>
+          </div>
+        </div>`);
+    }
+    worksGrid.innerHTML = cards.map((card, i) => card((i % 4) * 90)).join("");
+  }
+
+  /* ---------- journal (journal.html) ---------- */
+  const journalMount = document.getElementById("journal-list");
+  if (journalMount) {
+    const posts = JOURNAL.map((j) => `
+      <article class="editorial-split journal-feature reveal">
+        <div class="editorial-image"></div>
+        <div class="editorial-copy">
+          ${j.kicker ? `<p class="eyebrow">${j.kicker}</p>` : ""}
+          <h2 class="display-3">${j.title}</h2>
+          ${j.excerpt ? `<p>${j.excerpt}</p>` : ""}
+          ${j.url ? `<a href="${j.url}" class="btn-ghost" target="_blank" rel="noopener">Visit ${domainOf(j.url)}</a>` : ""}
         </div>
-      </a>`;
-  }).join("");
+      </article>`).join("");
+
+    // Upcoming slots, clearly marked until real posts replace them.
+    const upcoming = ["Upcoming release", "Artist interview", "Studio visit"].map((kind) => `
+      <li class="journal-row reveal">
+        <span class="journal-row-kind">${kind}</span>
+        <span class="journal-row-title">Title to come</span>
+        <span class="placeholder-note">Placeholder</span>
+      </li>`).join("");
+
+    journalMount.innerHTML = `
+      ${posts}
+      <div class="journal-upcoming">
+        <p class="eyebrow">Coming up</p>
+        <ul class="journal-rows">${upcoming}</ul>
+      </div>`;
+  }
+
+  /* ---------- homepage explore counts ---------- */
+  const counts = { artists: ARTISTS.length, work: WORKS.length, journal: JOURNAL.length };
+  document.querySelectorAll("[data-count]").forEach((el) => {
+    el.textContent = String(counts[el.dataset.count]).padStart(2, "0");
+  });
 
   /* ---------- scroll reveal ---------- */
   const revealEls = document.querySelectorAll(".reveal");
@@ -67,16 +126,24 @@
   revealEls.forEach((el) => revealObserver.observe(el));
 
   /* ---------- adaptive nav colour ---------- */
+  // Match the nav to whichever section is directly behind it, so short
+  // page headers get the right colour too.
   const nav = document.getElementById("site-nav");
-  const themedSections = document.querySelectorAll("[data-nav-theme]");
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        nav.dataset.theme = entry.target.dataset.navTheme;
-      }
+  const themedSections = Array.from(document.querySelectorAll("[data-nav-theme]"));
+  let navFrame = 0;
+  function updateNavTheme() {
+    navFrame = 0;
+    const probe = nav.offsetHeight / 2;
+    const current = themedSections.find((s) => {
+      const r = s.getBoundingClientRect();
+      return r.top <= probe && r.bottom > probe;
     });
-  }, { rootMargin: "-50% 0px -50% 0px" });
-  themedSections.forEach((s) => navObserver.observe(s));
+    if (current) nav.dataset.theme = current.dataset.navTheme;
+  }
+  const queueNavTheme = () => { if (!navFrame) navFrame = requestAnimationFrame(updateNavTheme); };
+  window.addEventListener("scroll", queueNavTheme, { passive: true });
+  window.addEventListener("resize", queueNavTheme);
+  updateNavTheme();
 
   /* ---------- mobile menu ---------- */
   const mobileMenu = document.getElementById("mobile-menu");
@@ -119,7 +186,7 @@
     if (artists.length) {
       html += `<div><p class="eyebrow search-group-title">Artists</p>` +
         artists.map((a) => `
-          <a href="${a.url || '#artists'}" class="search-row" ${a.url ? 'target="_blank" rel="noopener"' : 'data-close-search'}>
+          <a href="${a.url || "artists.html#" + a.id}" class="search-row" ${a.url ? 'target="_blank" rel="noopener"' : "data-close-search"}>
             <span class="search-row-title">${a.name}</span>
             <span class="search-row-meta">${a.url ? a.tag : "Store coming soon"}</span>
           </a>`).join("") + `</div>`;
@@ -135,7 +202,7 @@
     if (journal.length) {
       html += `<div><p class="eyebrow search-group-title">Journal</p>` +
         journal.map((j) => `
-          <a href="#journal" class="search-row" data-close-search>
+          <a href="journal.html" class="search-row" data-close-search>
             <span class="search-row-title">${j.title}</span>
           </a>`).join("") + `</div>`;
     }
@@ -149,9 +216,33 @@
   /* ---------- newsletter ---------- */
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterSuccess = document.getElementById("newsletter-success");
-  newsletterForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    newsletterForm.hidden = true;
-    newsletterSuccess.hidden = false;
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      newsletterForm.hidden = true;
+      newsletterSuccess.hidden = false;
+    });
+  }
+
+  /* ---------- transition veil on external links ---------- */
+  // External links open in a new tab, so the veil is a brief fade to black
+  // naming where you're headed, then lifts again behind the new tab.
+  const veil = document.createElement("div");
+  veil.className = "veil";
+  veil.setAttribute("aria-hidden", "true");
+  veil.innerHTML = `<p class="veil-text"></p>`;
+  document.body.appendChild(veil);
+  let veilTimer = 0;
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href]");
+    if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (!/^https?:$/.test(link.protocol) || link.host === location.host) return;
+    if (reducedMotion.matches) return;
+    veil.firstElementChild.textContent = "Opening " + domainOf(link.href);
+    veil.classList.add("is-on");
+    clearTimeout(veilTimer);
+    veilTimer = setTimeout(() => veil.classList.remove("is-on"), 900);
   });
+  window.addEventListener("pageshow", () => veil.classList.remove("is-on"));
 })();
