@@ -111,6 +111,7 @@
   const featured = document.getElementById("featured");
   if (featured && FEATURED.length) {
     const label = document.getElementById("featured-label");
+    const PORTRAIT_QUERY = "(max-aspect-ratio: 4/5)"; // keep in step with the matching rule in style.css
     const multiple = FEATURED.length > 1;
     const slides = FEATURED.map((f, i) => {
       const slide = document.createElement("figure");
@@ -119,7 +120,8 @@
       slide.setAttribute("aria-roledescription", "slide");
       slide.setAttribute("aria-label", `${i + 1} of ${FEATURED.length}`);
       slide.setAttribute("aria-hidden", i === 0 ? "false" : "true");
-      slide.innerHTML = `<img src="${f.image}" alt="${f.alt}" class="kenburns"${f.position ? ` style="object-position:${f.position};"` : ""}${i === 0 ? "" : ' loading="lazy"'}>`;
+      const portrait = f.imagePortrait ? `<source media="${PORTRAIT_QUERY}" srcset="${f.imagePortrait}">` : "";
+      slide.innerHTML = `<picture>${portrait}<img src="${f.image}" alt="${f.alt}" class="kenburns"${f.position ? ` style="--featured-position:${f.position};"` : ""}${i === 0 ? "" : ' loading="lazy"'}></picture>`;
       featured.insertBefore(slide, label);
       return slide;
     });
