@@ -137,7 +137,11 @@ const FEATURED = [
     imagePortrait: "featured-konn-artiss-portrait.jpg",
     alt: "Mixed-media artwork by Konn Artiss: a glossy black disc bearing the name KONN ARTISS over layered yellow, red and black paint and torn posters",
     artist: "Konn Artiss",
-    position: "center 100%"
+    // Keeps the "KONN ARTISS" lettering (47% down the square image) in the
+    // gap between the nav and the hero text on landscape screens: centred
+    // 25vh - 65px from the top, but never shifted so far that the image
+    // stops covering the bottom edge, and never pushed down past the top.
+    position: "50% min(0px, max(25vh - 65px - 47vw, 100vh - 100vw))"
   },
   {
     image: "featured-space-rats.jpg",
