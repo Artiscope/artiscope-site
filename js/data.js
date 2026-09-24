@@ -127,10 +127,13 @@ const CONTACT = {
   Homepage featured artwork, shown as a slideshow in the hero. "artist"
   is optional and appears beside the "Featured artwork" label; "position"
   is optional and moves the crop (CSS object-position) for that image.
+  "imagePortrait" is optional: a separate crop used on tall, narrow screens
+  such as phones, where the main image would put its detail behind the text.
 */
 const FEATURED = [
   {
     image: "featured-konn-artiss.jpg",
+    imagePortrait: "featured-konn-artiss-portrait.jpg",
     alt: "Mixed-media artwork by Konn Artiss: a glossy black disc bearing the name KONN ARTISS over layered yellow, red and black paint and torn posters",
     artist: "Konn Artiss",
     position: "center 100%"

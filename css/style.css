@@ -217,7 +217,16 @@ input { font-family: inherit; }
   opacity: 0; transition: opacity 1.2s ease;
 }
 .featured-slide.is-active { opacity: 1; }
-.featured-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.featured-slide picture { display: block; width: 100%; height: 100%; }
+.featured-slide img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  object-position: var(--featured-position, center);
+}
+/* Portrait crops are framed for tall screens already, so centre them.
+   Keep in step with PORTRAIT_QUERY in main.js. */
+@media (max-aspect-ratio: 4/5) {
+  .featured-slide picture:has(source) img { object-position: center; }
+}
 .featured-controls {
   position: absolute; right: 28px; bottom: 34px; z-index: 1;
   display: flex; align-items: center; gap: 4px;
