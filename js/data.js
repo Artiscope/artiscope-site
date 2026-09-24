@@ -127,8 +127,9 @@ const CONTACT = {
   Homepage featured artwork, shown as a slideshow in the hero. "artist"
   is optional and appears beside the "Featured artwork" label; "position"
   is optional and moves the crop (CSS object-position) for that image.
-  "imagePortrait" is optional: a separate crop used on tall, narrow screens
+  "imagePortrait" is optional: a separate image used on tall, narrow screens
   such as phones, where the main image would put its detail behind the text.
+  It is anchored to its bottom edge, so keep the detail low in the frame.
 */
 const FEATURED = [
   {
