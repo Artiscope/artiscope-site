@@ -194,6 +194,13 @@ input { font-family: inherit; }
   to   { transform: translate3d(-2%, 1.5%, 0); }
 }
 .hero-copy { font-size: 18px; color: rgba(255,255,255,0.75); max-width: 480px; line-height: 1.6; }
+.hero-btn-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.btn-outline-light {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.btn-outline-light:hover { background: rgba(255,255,255,0.1); opacity: 1; }
 .scroll-cue {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
 }
