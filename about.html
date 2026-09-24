@@ -119,15 +119,37 @@
     </div>
   </section>
 
-  <!-- CONTACT: placeholder, add real contact details -->
-  <section class="chapter about-block" id="contact" data-nav-theme="dark">
-    <div class="about-split reveal">
-      <h2 class="display-3">Contact</h2>
-      <div class="about-split-copy">
-        <span class="placeholder-note">Placeholder, add real contact details</span>
-        <p>Contact email and, if wanted, press and artist-submission addresses go here.</p>
-        <p>For anything about an order, contact the artist directly through their own store.</p>
-      </div>
+  <!-- CONTACT -->
+  <section class="chapter hero contact" id="contact" data-nav-theme="light">
+    <div class="contact-inner reveal">
+      <h2 class="display-2">Contact Artiscope</h2>
+      <p class="contact-intro">Let us know why you're getting in touch in the message.</p>
+      <p class="contact-intro">Questions about an order go to the artist, through their own store.</p>
+
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="contact-field">
+          <label for="contact-name">Name</label>
+          <input id="contact-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="contact-field">
+          <label for="contact-email">Email</label>
+          <input id="contact-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="contact-field contact-field-wide">
+          <label for="contact-phone">Phone number</label>
+          <input id="contact-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="contact-field contact-field-wide">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="contact-actions contact-field-wide">
+          <button class="btn-primary btn-light" type="submit">Send</button>
+          <p class="contact-status" id="contact-status" role="status"></p>
+        </div>
+      </form>
+      <!-- Not connected to anything yet: set CONTACT.email in js/data.js -->
+      <span class="placeholder-note" id="contact-unconnected">Placeholder: form not connected yet</span>
     </div>
   </section>
 

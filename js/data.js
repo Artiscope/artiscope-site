@@ -113,3 +113,12 @@ const JOURNAL = [
     url: "https://frankcanvas.com/"
   }
 ];
+
+/*
+  Where the contact form on about.html sends to. The site has no server,
+  so the form opens the visitor's email app with their message filled in,
+  addressed here. While this is null the form shows as "not connected".
+*/
+const CONTACT = {
+  email: null
+};
