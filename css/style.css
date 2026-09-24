@@ -87,6 +87,7 @@ input { font-family: inherit; }
   color: inherit;
 }
 .nav-link:hover { opacity: 0.6; }
+.nav-link[aria-current="page"] { border-bottom-color: currentColor; }
 .nav-icons { display: flex; align-items: center; gap: 18px; color: inherit; }
 .icon-btn {
   background: none; border: none; padding: 4px;
@@ -201,6 +202,24 @@ input { font-family: inherit; }
   border: 1px solid rgba(255,255,255,0.5);
 }
 .btn-outline-light:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+/* Featured artwork slot: a textured dark panel until a real image is chosen. */
+.hero-image {
+  position: relative; overflow: hidden;
+  width: min(720px, 100%); aspect-ratio: 16 / 9; margin-top: 24px;
+  border-radius: 24px; border: 1px solid rgba(255,255,255,0.12);
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 11px),
+    radial-gradient(80% 90% at 30% 20%, #3A3A3A 0%, #141414 70%);
+}
+.hero-image::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+.hero-image-label {
+  position: absolute; left: 24px; bottom: 20px; z-index: 1;
+  font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.55);
+}
 .scroll-cue {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
 }
@@ -224,12 +243,49 @@ input { font-family: inherit; }
 }
 .statement-fade { color: var(--ink); }
 
-/* ---------- ARTIST CHAPTER ---------- */
-.artist-chapter { color: inherit; }
-.artist-chapter-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; max-width: 640px;
+/* ---------- PAGE HEADERS (inner pages) ---------- */
+.page-head { min-height: 64vh; padding: 180px 32px 110px; }
+.page-head-light { background: #FFFFFF; }
+.page-lede { font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.6; }
+
+/* ---------- EXPLORE (homepage teaser) ---------- */
+.explore { background: var(--tint); min-height: auto; padding: 140px 32px; }
+.explore-list { width: 100%; max-width: 1100px; border-top: 1px solid #D9D9D9; }
+.explore-row {
+  display: grid; grid-template-columns: 90px 1fr auto; align-items: baseline; gap: 24px;
+  padding: 36px 0; border-bottom: 1px solid #D9D9D9;
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1), padding 0.3s cubic-bezier(0.16,1,0.3,1);
 }
-.artist-logo-large { max-width: 70%; max-height: 130px; width: auto; height: auto; }
+.explore-row:hover { padding-left: 12px; }
+.explore-count { font-size: 13px; color: var(--muted); letter-spacing: 0.08em; }
+.explore-title { font-family: "Fraunces", Georgia, serif; font-size: 48px; line-height: 1.1; }
+.explore-desc { display: block; font-family: "Work Sans", system-ui, sans-serif; font-size: 15px; color: var(--muted); margin-top: 10px; }
+.explore-arrow { font-size: 28px; }
+
+/* ---------- ARTIST CARDS ---------- */
+.artists-section { background: #FFFFFF; min-height: auto; padding: 120px 32px 140px; }
+.artists-grid {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;
+}
+.artist-card {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: 460px; border-radius: 24px; padding: 48px 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.artist-card-photo {
+  position: absolute; inset: 0; z-index: -2;
+  background-size: cover; background-position: center;
+}
+.artist-card-has-photo { background: #0A0A0A; }
+.artist-card-has-photo::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%);
+}
+.artist-card-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; max-width: 440px;
+}
+.artist-logo-large { max-width: 70%; max-height: 110px; width: auto; height: auto; }
 .artist-name-large { font-size: 56px; }
 .artist-tag-large { font-size: 17px; opacity: 0.75; max-width: 440px; }
 .artist-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
@@ -265,6 +321,21 @@ input { font-family: inherit; }
 .work-row { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
 .work-price { font-size: 14px; color: var(--muted-2); }
 .work-link { font-size: 13px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 1px; width: fit-content; }
+.work-card-placeholder:hover { transform: none; }
+.work-card-placeholder .work-image {
+  border: 1px dashed #BDBDBD; display: flex; align-items: center; justify-content: center;
+}
+.work-card-placeholder .work-title,
+.work-card-placeholder .work-artist { color: #A6A6A6; }
+
+/* ---------- PLACEHOLDER MARKER ---------- */
+/* Flags copy or slots still waiting on real content. Remove with the copy. */
+.placeholder-note {
+  display: inline-block; width: fit-content;
+  font-family: "Work Sans", system-ui, sans-serif; font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 5px 10px; border: 1px dashed currentColor; border-radius: 999px; opacity: 0.6;
+}
 
 /* ---------- TRUST ---------- */
 .trust { background: var(--ink); color: #FFFFFF; }
@@ -280,6 +351,28 @@ input { font-family: inherit; }
 .editorial-image { width: 100%; aspect-ratio: 4/5; border-radius: 24px; background: linear-gradient(160deg, #4A4A4A 0%, #0A0A0A 100%); }
 .editorial-copy { display: flex; flex-direction: column; gap: 20px; max-width: 460px; }
 .editorial-copy p { font-size: 16px; color: var(--muted-2); line-height: 1.7; }
+
+/* ---------- JOURNAL ---------- */
+.journal-section { background: #FFFFFF; min-height: auto; padding: 60px 32px 140px; }
+.journal-list { width: 100%; display: flex; flex-direction: column; gap: 120px; }
+.journal-upcoming { max-width: 1100px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.journal-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.journal-row {
+  display: grid; grid-template-columns: 200px 1fr auto; align-items: center; gap: 24px;
+  padding: 28px 0; border-bottom: 1px solid var(--line); color: var(--muted);
+}
+.journal-row-kind { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; }
+.journal-row-title { font-family: "Fraunces", Georgia, serif; font-size: 26px; color: #A6A6A6; }
+
+/* ---------- ABOUT ---------- */
+.about-block { background: #FFFFFF; min-height: auto; padding: 140px 32px; }
+.about-block-tint { background: var(--tint); }
+.about-split {
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: start; text-align: left;
+}
+.about-split-copy { display: flex; flex-direction: column; gap: 18px; }
+.about-split-copy p { font-size: 17px; color: var(--muted-2); line-height: 1.7; }
 
 /* ---------- NEWSLETTER ---------- */
 .newsletter { background: #FFFFFF; gap: 20px; min-height: auto; padding: 140px 32px; }
@@ -309,6 +402,19 @@ input { font-family: inherit; }
   display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6;
 }
 
+/* ---------- TRANSITION VEIL ---------- */
+.veil {
+  position: fixed; inset: 0; z-index: 300; background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.veil.is-on { opacity: 1; }
+.veil-text {
+  color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.16em;
+}
+
 [hidden] { display: none !important; }
 
 /* ---------- RESPONSIVE ---------- */
@@ -322,5 +428,16 @@ input { font-family: inherit; }
   .trust-line { font-size: 22px; }
   .editorial-split { grid-template-columns: 1fr; }
   .artist-name-large { font-size: 40px; }
+  .artists-grid { grid-template-columns: 1fr; }
+  .artist-card { min-height: 400px; }
+  .explore-row { grid-template-columns: 1fr auto; gap: 12px; }
+  .explore-count { grid-column: 1 / -1; }
+  .explore-title { font-size: 34px; }
+  .journal-row { grid-template-columns: 1fr; gap: 10px; }
+  .journal-row-title { font-size: 22px; }
+  .about-split { grid-template-columns: 1fr; gap: 24px; }
+  .page-head { min-height: 56vh; padding: 140px 24px 80px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
   .chapter { padding: 100px 24px; }
 }
