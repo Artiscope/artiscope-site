@@ -136,8 +136,8 @@ const FEATURED = [
   },
   {
     image: "featured-space-rats.jpg",
-    alt: "Stencil artwork of two rats in space helmets with spray-can air tanks, standing beside a rocket on a violet background",
-    artist: null,
+    alt: "Stencil artwork by Zen Xander of two rats in space helmets with spray-can air tanks, standing beside a rocket on a violet background",
+    artist: "Zen Xander",
     position: "center 75%"
   }
 ];
