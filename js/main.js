@@ -107,6 +107,83 @@
       </div>`;
   }
 
+  /* ---------- featured artwork slideshow (index.html) ---------- */
+  const featured = document.getElementById("featured");
+  if (featured && FEATURED.length) {
+    const label = document.getElementById("featured-label");
+    const multiple = FEATURED.length > 1;
+    const slides = FEATURED.map((f, i) => {
+      const slide = document.createElement("figure");
+      slide.className = "featured-slide" + (i === 0 ? " is-active" : "");
+      slide.setAttribute("role", "group");
+      slide.setAttribute("aria-roledescription", "slide");
+      slide.setAttribute("aria-label", `${i + 1} of ${FEATURED.length}`);
+      slide.setAttribute("aria-hidden", i === 0 ? "false" : "true");
+      slide.innerHTML = `<img src="${f.image}" alt="${f.alt}" class="kenburns"${f.position ? ` style="object-position:${f.position};"` : ""}${i === 0 ? "" : ' loading="lazy"'}>`;
+      featured.insertBefore(slide, label);
+      return slide;
+    });
+
+    let current = 0;
+    let dots = [];
+    const show = (i) => {
+      slides[current].classList.remove("is-active");
+      slides[current].setAttribute("aria-hidden", "true");
+      if (dots.length) dots[current].removeAttribute("aria-current");
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add("is-active");
+      slides[current].setAttribute("aria-hidden", "false");
+      if (dots.length) dots[current].setAttribute("aria-current", "true");
+      const artist = FEATURED[current].artist;
+      label.innerHTML = artist
+        ? `<span class="featured-prefix">Featured artwork \u00b7 </span>${artist}`
+        : "Featured artwork";
+    };
+
+    if (multiple) {
+      // Autoplay, holding while the pointer or focus is on the slideshow,
+      // while the tab is hidden, or while the visitor has paused it.
+      // Starts paused for visitors who prefer reduced motion.
+      const controls = document.createElement("div");
+      controls.className = "featured-controls";
+      controls.innerHTML =
+        FEATURED.map((_, i) => `<button type="button" class="featured-dot" aria-label="Show artwork ${i + 1}"></button>`).join("") +
+        `<button type="button" class="featured-toggle"></button>`;
+      featured.appendChild(controls);
+      dots = Array.from(controls.querySelectorAll(".featured-dot"));
+      const toggle = controls.querySelector(".featured-toggle");
+
+      let paused = reducedMotion.matches;
+      let held = false;
+      let timer = 0;
+      const INTERVAL = 5000;
+      const schedule = () => {
+        clearInterval(timer);
+        if (!paused && !held && !document.hidden) timer = setInterval(() => show(current + 1), INTERVAL);
+      };
+      const renderToggle = () => {
+        toggle.setAttribute("aria-label", paused ? "Play slideshow" : "Pause slideshow");
+        toggle.innerHTML = paused
+          ? `<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>`
+          : `<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><rect x="2" y="1" width="3" height="10"/><rect x="7" y="1" width="3" height="10"/></svg>`;
+      };
+
+      dots.forEach((dot, i) => dot.addEventListener("click", () => { show(i); schedule(); }));
+      toggle.addEventListener("click", () => { paused = !paused; renderToggle(); schedule(); });
+      featured.addEventListener("mouseenter", () => { held = true; schedule(); });
+      featured.addEventListener("mouseleave", () => { held = false; schedule(); });
+      featured.addEventListener("focusin", () => { held = true; schedule(); });
+      featured.addEventListener("focusout", (e) => {
+        if (!featured.contains(e.relatedTarget)) { held = false; schedule(); }
+      });
+      document.addEventListener("visibilitychange", schedule);
+
+      renderToggle();
+      schedule();
+    }
+    show(0);
+  }
+
   /* ---------- homepage explore counts ---------- */
   const counts = { artists: ARTISTS.length, work: WORKS.length, journal: JOURNAL.length };
   document.querySelectorAll("[data-count]").forEach((el) => {
